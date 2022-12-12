@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:udlib/udlib.dart';
 
@@ -21,6 +23,19 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  _play() async {
+    String result;
+    try {
+      result =
+          await _udlibPlugin.play("https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Baby.Shark.Best.Kids.Song/S01/01.mp4") ?? false ? "Success" : "Failed";
+    } on PlatformException {
+      result = 'Failed to play.';
+    }
+    if(kDebugMode) {
+      print(result);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,8 +43,11 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: const Center(
-          child: Text(''),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: _play,
+            child: const Text('Play'),
+          ),
         ),
       ),
     );

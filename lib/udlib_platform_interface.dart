@@ -22,4 +22,8 @@ abstract class UdlibPlatform extends PlatformInterface {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
   }
+
+  Future<bool?> play(String url) {
+    throw UnimplementedError('play() has not been implemented.');
+  }
 }
