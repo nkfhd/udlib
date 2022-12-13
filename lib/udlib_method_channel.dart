@@ -10,8 +10,7 @@ class MethodChannelUdlib extends UdlibPlatform {
   final methodChannel = const MethodChannel('udlib');
 
   @override
-  Future<bool?> play(String url) async {
-    final version = await methodChannel.invokeMethod<bool>('play',{"video_url":url});
-    return version;
+  Future<dynamic> play(Map<String,dynamic> data) async {
+    return await methodChannel.invokeMethod('play',data);
   }
 }

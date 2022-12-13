@@ -2,7 +2,7 @@
 import 'udlib_platform_interface.dart';
 
 class Udlib {
-  Future<bool?> play(String url) {
-    return UdlibPlatform.instance.play(url);
+  Future<dynamic> play(Map<String,dynamic> data) {
+    return UdlibPlatform.instance.play(data);
   }
 }

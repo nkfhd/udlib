@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,15 +26,31 @@ class _MyAppState extends State<MyApp> {
   }
 
   _play() async {
-    String result;
+    dynamic result;
     try {
       result =
-          await _udlibPlugin.play("https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Baby.Shark.Best.Kids.Song/S01/01.mp4") ?? false ? "Success" : "Failed";
+          await _udlibPlugin.play(
+            {
+              "title": "title",
+              "id": '205727',
+              "type": "series",
+              "description": "here is the description",
+              "posterPhoto": 'https://thekee-m.gcdn.co/images06012022/uploads/media/series/posters/2022-09-27/0ObHcBVUnfpzbtIB.jpg',
+              "mediaUrl": "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Baby.Shark.Best.Kids.Song/S01/01.mp4",
+              "playPosition": '9000',
+              "userId": '77810',
+              "profileId": '217588',
+              "mediaType": "tvshow",
+              "episodes": jsonEncode([]),
+              "subtitles": jsonEncode([]),
+              "subtitle": "-"
+            }
+          ) ?? 'UnKnown Result from play';
     } on PlatformException {
       result = 'Failed to play.';
     }
     if(kDebugMode) {
-      print(result);
+      print("result: $result");
     }
   }
 

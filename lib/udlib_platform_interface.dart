@@ -23,7 +23,7 @@ abstract class UdlibPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<bool?> play(String url) {
+  Future<dynamic> play(Map<String,dynamic> data) {
     throw UnimplementedError('play() has not been implemented.');
   }
 }
