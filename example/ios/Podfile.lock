@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - udlib (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - udlib (from `.symlinks/plugins/udlib/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  udlib:
+    :path: ".symlinks/plugins/udlib/ios"
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  udlib: a92406e1830571824bb309598e0b709a35216e00
+
+PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
+
+COCOAPODS: 1.11.3
