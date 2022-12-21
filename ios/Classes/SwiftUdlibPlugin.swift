@@ -283,7 +283,7 @@ public class SwiftUdlibPlugin: NSObject, FlutterPlugin {
         
     }
     
-    func applicationWillTerminate() {
+    public func applicationWillTerminate() {
         if(self.avPlayer != nil){
             self.avPlayer.pause()
         }
@@ -291,7 +291,7 @@ public class SwiftUdlibPlugin: NSObject, FlutterPlugin {
     }
     
     
-    func applicationDidEnterBackground() {
+    public func applicationDidEnterBackground() {
         var isAudioSessionUsingAirplayOutputRoute: Bool {
             
             let audioSession = AVAudioSession.sharedInstance()
