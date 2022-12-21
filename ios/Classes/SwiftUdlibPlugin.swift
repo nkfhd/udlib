@@ -5,6 +5,8 @@ import Foundation
 import AVKit
 
 public class SwiftUdlibPlugin: NSObject, FlutterPlugin {
+    public static var shared : SwiftUdlibPlugin!
+
     var avPlayer: AVPlayer!
     var avPlayerViewController: AVPlayerViewController!
     var avPlayerItem: AVPlayerItem!
@@ -24,6 +26,7 @@ public class SwiftUdlibPlugin: NSObject, FlutterPlugin {
         
         let instance = SwiftUdlibPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
+        shared = instance
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -283,6 +286,33 @@ public class SwiftUdlibPlugin: NSObject, FlutterPlugin {
     func applicationWillTerminate() {
         if(self.avPlayer != nil){
             self.avPlayer.pause()
+        }
+        
+    }
+    
+    
+    func applicationDidEnterBackground() {
+        var isAudioSessionUsingAirplayOutputRoute: Bool {
+            
+            let audioSession = AVAudioSession.sharedInstance()
+            let currentRoute = audioSession.currentRoute
+            
+            for outputPort in currentRoute.outputs {
+                if outputPort.portType == AVAudioSession.Port.airPlay {
+                    return true
+                }
+            }
+            
+            return false
+        }
+        if(isAudioSessionUsingAirplayOutputRoute){
+            
+        } else if(UIScreen.screens.count >= 2){
+            
+        } else {
+            if(self.avPlayer != nil){
+                self.avPlayer.pause()
+            }
         }
         
     }
