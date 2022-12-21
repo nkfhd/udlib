@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import udlib
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -10,4 +11,8 @@ import Flutter
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+    
+    override func applicationDidEnterBackground(_ application: UIApplication) {
+        SwiftUdlibPlugin.shared.applicationDidEnterBackground()
+    }
 }
