@@ -257,32 +257,6 @@ public class SwiftUdlibPlugin: NSObject, FlutterPlugin {
         }
     }
     
-    func applicationDidEnterBackground() {
-        var isAudioSessionUsingAirplayOutputRoute: Bool {
-            
-            let audioSession = AVAudioSession.sharedInstance()
-            let currentRoute = audioSession.currentRoute
-            
-            for outputPort in currentRoute.outputs {
-                if outputPort.portType == AVAudioSession.Port.airPlay {
-                    return true
-                }
-            }
-            
-            return false
-        }
-        if(isAudioSessionUsingAirplayOutputRoute){
-            
-        } else if(UIScreen.screens.count >= 2){
-            
-        } else {
-            if(self.avPlayer != nil){
-                self.avPlayer.pause()
-            }
-        }
-        
-    }
-    
     public func applicationWillTerminate() {
         if(self.avPlayer != nil){
             self.avPlayer.pause()
