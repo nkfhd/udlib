@@ -3,44 +3,54 @@ package com.udlib.udlib
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import com.actsol.thekee.Episode
 import com.actsol.thekee.Subtitle
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray
+import com.google.android.exoplayer2.ui.DefaultTrackNameProvider
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.util.Assertions
+import io.flutter.Log
 import org.json.JSONObject
 
 class PlayerActivity : Activity() {
-    val TAG: String = PlayerActivity::class.java.getSimpleName()
+    companion object {
+        val TAG: String = PlayerActivity::class.java.getSimpleName()
 
-    var player: SimpleExoPlayer? = null
-    var playerView: PlayerView? = null
+        var player: SimpleExoPlayer? = null
+        var playerView: PlayerView? = null
 
-    var mediaUrl: String? = ""
-    var playPosition: Long? = 0
-    var userId: String? = null
-    var profileId: String? = null
-    var mediaId: String? = null
-    var mediaType: String? = null
-    var episodePosition: Int? = null
-    var episodesList: List<Episode>? = null
-    var subtitleList: List<Subtitle>? = null
+        var mediaUrl: String? = ""
+        var playPosition: Long? = 0
+        var userId: String? = null
+        var profileId: String? = null
+        var mediaId: String? = null
+        var mediaType: String? = null
+        var episodePosition: Int? = null
+        var episodesList: List<Episode>? = null
+        var subtitleList: List<Subtitle>? = null
 
-    var trackSelector: DefaultTrackSelector? = null
-    var back_btn: ImageButton? = null
-    var audioBtn: ImageButton? = null
-    var audioLinear: LinearLayout? = null
-    var nextEpisodeLinear: LinearLayout? = null
-    var prevEpisodeLinear: LinearLayout? = null
-    var ccLienar: LinearLayout? = null
-    var audiosList = arrayOf("Auto", "Arabic")
-    var ccList = arrayOf("Auto", "Arabic");
+        var trackSelector: DefaultTrackSelector? = null
+        var back_btn: ImageButton? = null
+        var audioBtn: ImageButton? = null
+        var audioLinear: LinearLayout? = null
+        var nextEpisodeLinear: LinearLayout? = null
+        var prevEpisodeLinear: LinearLayout? = null
+        var ccLienar: LinearLayout? = null
+        var audiosList = arrayOf("Auto", "Arabic")
+        var ccList = arrayOf("Auto", "Arabic");
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         window.decorView.apply {
             systemUiVisibility =
@@ -88,5 +98,34 @@ class PlayerActivity : Activity() {
             finish()
         }
 
+        playerInitiate()
+
     }
+
+    private fun playerInitiate() {
+        trackSelector = DefaultTrackSelector(applicationContext)
+        trackSelector?.buildUponParameters()
+            ?.setMaxVideoSizeSd()
+            ?.setPreferredTextLanguage("en")
+            ?.setPreferredAudioLanguage("en")
+
+        player = SimpleExoPlayer.Builder(applicationContext)
+            .setTrackSelector(trackSelector!!)
+            .build()
+
+        playerView?.player = player
+
+        player?.playWhenReady = true
+
+        val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
+        val mediaSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
+            .createMediaSource(MediaItem.fromUri(mediaUrl.toString()))
+        player!!.setMediaSource(mediaSource)
+        player!!.prepare()
+        player?.seekTo(playPosition!!)
+        playerView?.setKeepScreenOn(true)
+
+    }
+
+
 }
