@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.annotation.NonNull
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -14,9 +15,11 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import io.flutter.plugin.common.PluginRegistry
 
 /** UdlibPlugin */
-class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
+    PluginRegistry.ActivityResultListener {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -34,14 +37,33 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         Log.d("UdlibPlugin", "onMethodCall: ${call.method}")
         if (call.method == "play") {
-            val intent = Intent(activity, PlayerActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
-            startActivity(context, intent, null)
+            play(call, result)
             result.success("Android ${android.os.Build.VERSION.RELEASE}")
         } else {
             result.notImplemented()
         }
     }
+
+    private fun play(call: MethodCall, result: MethodChannel.Result) {
+        var mediaUrl: String? = call.argument("mediaUrl")
+        var playPosition: String? = call.argument("playPosition")
+        var userId: String? = call.argument("userId")
+        var profileId: String? = call.argument("profileId")
+        var id: String? = call.argument("id")
+        var mediaType: String? = call.argument("type")
+
+        val intent = Intent(activity, PlayerActivity::class.java)
+        intent.putExtra("mediaUrl", mediaUrl)
+        intent.putExtra("playPosition", playPosition)
+        intent.putExtra("userId", userId)
+        intent.putExtra("mediaId", id)
+        intent.putExtra("profileId", profileId)
+        intent.putExtra("mediaType", mediaType)
+
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
+        ActivityCompat.startActivityForResult(activity, intent, 833831, null)
+    }
+
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
@@ -62,5 +84,17 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromActivity() {
         TODO("Not yet implemented")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        if (requestCode == 833831) {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.d("UdlibPlugin", "onActivityResult")
+                // Get String data from Intent
+//                val returnString = data!!.getStringExtra("result_data")
+//                globalResult?.success(returnString);
+            }
+        }
+        return true
     }
 }
