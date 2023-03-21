@@ -17,13 +17,8 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
 
-/** UdlibPlugin */
 class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     PluginRegistry.ActivityResultListener {
-    /// The MethodChannel that will the communication between Flutter and native Android
-    ///
-    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-    /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
     private lateinit var activity: Activity
@@ -45,12 +40,13 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
     private fun play(call: MethodCall, result: MethodChannel.Result) {
-        var mediaUrl: String? = call.argument("mediaUrl")
-        var playPosition: String? = call.argument("playPosition")
-        var userId: String? = call.argument("userId")
-        var profileId: String? = call.argument("profileId")
-        var id: String? = call.argument("id")
-        var mediaType: String? = call.argument("type")
+        val mediaUrl: String? = call.argument("mediaUrl")
+        val playPosition: String? = call.argument("playPosition")
+        val userId: String? = call.argument("userId")
+        val profileId: String? = call.argument("profileId")
+        val id: String? = call.argument("id")
+        val mediaType: String? = call.argument("mediaType")
+        val subtitles: String? = call.argument("subtitles")
 
         val intent = Intent(activity, PlayerActivity::class.java)
         intent.putExtra("mediaUrl", mediaUrl)
@@ -59,6 +55,15 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         intent.putExtra("mediaId", id)
         intent.putExtra("profileId", profileId)
         intent.putExtra("mediaType", mediaType)
+        intent.putExtra("subtitles", subtitles)
+
+        if (mediaType.toString().toLowerCase().equals("tvshow")) {
+            Log.d("TVSHOW_HERE", "TVSHOW_HERE");
+            var episode_position: String? = call.argument<String?>("episode_position").toString()
+            var episodes: String? = call.argument("episodes")
+            intent.putExtra("episode_position", episode_position)
+            intent.putExtra("episodes", episodes)
+        }
 
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
         ActivityCompat.startActivityForResult(activity, intent, 833831, null)

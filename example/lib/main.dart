@@ -26,6 +26,86 @@ class _MyAppState extends State<MyApp> {
   }
 
   _play() async {
+    List<Map<String,dynamic>> seasonEpisodes = [
+      {
+        "id": 64863,
+        "title": "Episode 1",
+        "order": "1",
+        "poster_photo":
+        "https://thekee-m.gcdn.co/images06012022/uploads/media/series/seasons/posters/2020-07-01/ZMx47Bf3sO03FprZ.jpg",
+        "duration": "10 min",
+        "download_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/01.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "hd_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/01.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "trailer_url": null,
+        "media_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/01.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "created_at": "2020-07-01 13:27:14",
+        "release_date": "2020-07-01 00:00:00",
+        "watching": {
+          "current_time": "13",
+          "duration": "1380"
+        }
+      },
+      {
+        "id": 64864,
+        "title": "Episode 2",
+        "order": "2",
+        "poster_photo":
+        "https://thekee-m.gcdn.co/images06012022/uploads/media/series/seasons/posters/2020-07-01/ZMx47Bf3sO03FprZ.jpg",
+        "duration": "10 min",
+        "download_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/02.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "hd_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/02.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "trailer_url": null,
+        "media_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/02.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "created_at": "2020-07-01 13:27:14",
+        "release_date": "2020-07-01 00:00:00",
+        "watching": {
+          "current_time": "25",
+          "duration": "60"
+        }
+      },
+      {
+        "id": 64865,
+        "title": "Episode 3",
+        "order": "3",
+        "poster_photo":
+        "https://thekee-m.gcdn.co/images06012022/uploads/media/series/seasons/posters/2020-07-01/ZMx47Bf3sO03FprZ.jpg",
+        "duration": "10 min",
+        "download_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/03.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "hd_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/03.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "trailer_url": null,
+        "media_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/03.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "created_at": "2020-07-01 13:27:14",
+        "release_date": "2020-07-01 00:00:00",
+        "watching": null
+      },
+      {
+        "id": 64866,
+        "title": "Episode 4",
+        "order": "4",
+        "poster_photo":
+        "https://thekee-m.gcdn.co/images06012022/uploads/media/series/seasons/posters/2020-07-01/ZMx47Bf3sO03FprZ.jpg",
+        "duration": "10 min",
+        "download_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/04.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "hd_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/04.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "trailer_url": null,
+        "media_url":
+        "https://thekee.gcdn.co/video/m-159n/English/Animation&Family/Tom.and.Jerry.1965/04.mp4?md5=eCp0VmIS_doipZ6lGVxwVg&expires=1678550892",
+        "created_at": "2020-07-01 13:27:14",
+        "release_date": "2020-07-01 00:00:00",
+        "watching": null
+      }
+    ];
     dynamic result;
     try {
       result =
@@ -41,9 +121,10 @@ class _MyAppState extends State<MyApp> {
               "userId": '77810',
               "profileId": '217588',
               "mediaType": "tvshow",
-              "episodes": jsonEncode([]),
+              "episodes": jsonEncode(seasonEpisodes),
               "subtitles": jsonEncode([]),
-              "subtitle": "-"
+              "subtitle": "-",
+              "episode_position":1
             }
           ) ?? 'UnKnown Result from play';
     } on PlatformException {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">q8mediamanager.com</domain>
+        <domain includeSubdomains="false">46.105.116.96</domain>
+    </domain-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">q8dvdpaly.com</domain>
+    </domain-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">s3.eu-central-1.wasabisys.com</domain>
+        <domain includeSubdomains="true">eu-central-1.wasabisys.com</domain>
+        <domain includeSubdomains="true">wasabisys.com</domain>
+    </domain-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">thekee.gcdn.co</domain>
+        <domain includeSubdomains="true">gcdn.co</domain>
+    </domain-config>
+
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+
+
+</network-security-config>
