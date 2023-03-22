@@ -105,6 +105,7 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activity = binding.activity
+        binding.addActivityResultListener(this)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
@@ -112,6 +113,7 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         activity = binding.activity
+        binding.addActivityResultListener(this)
     }
 
     override fun onDetachedFromActivity() {
