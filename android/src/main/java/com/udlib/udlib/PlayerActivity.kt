@@ -93,20 +93,6 @@ class PlayerActivity : Activity() {
 
         back_btn?.setOnClickListener {
             super.onBackPressed()
-            val intent = Intent()
-            val rootObject = JSONObject()
-            var type = if (mediaType.toString().equals("tvshow")) "series" else "movie"
-            rootObject.put("mediaId", mediaId.toString())
-            rootObject.put("time", (player?.getCurrentPosition()!! / 1000).toString())
-            rootObject.put("duration", (player?.duration!! / 1000).toString())
-            rootObject.put("userId", userId.toString())
-            rootObject.put("profileId", profileId.toString())
-            rootObject.put("lang", "ar")
-            rootObject.put("type", type.toString())
-
-            intent.putExtra("result_data", rootObject.toString())
-            setResult(RESULT_OK, intent)
-            finish()
         }
 
         if (intent.getStringExtra("mediaType").equals("tvshow")) {
