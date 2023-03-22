@@ -5,4 +5,8 @@ class Udlib {
   Future<dynamic> play(Map<String,dynamic> data) {
     return UdlibPlatform.instance.play(data);
   }
+
+  Future<dynamic> playOffline(Map<String,dynamic> data) {
+    return UdlibPlatform.instance.playOffline(data);
+  }
 }

@@ -26,4 +26,8 @@ abstract class UdlibPlatform extends PlatformInterface {
   Future<dynamic> play(Map<String,dynamic> data) {
     throw UnimplementedError('play() has not been implemented.');
   }
+
+  Future<dynamic> playOffline(Map<String,dynamic> data) {
+    throw UnimplementedError('playOffline() has not been implemented.');
+  }
 }

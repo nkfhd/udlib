@@ -13,4 +13,9 @@ class MethodChannelUdlib extends UdlibPlatform {
   Future<dynamic> play(Map<String,dynamic> data) async {
     return await methodChannel.invokeMethod('play',data);
   }
+
+  @override
+  Future<dynamic> playOffline(Map<String,dynamic> data) async {
+    return await methodChannel.invokeMethod('play_offline',data);
+  }
 }
