@@ -92,21 +92,7 @@ class PlayerActivity : Activity() {
         ccLienar?.visibility = View.INVISIBLE
 
         back_btn?.setOnClickListener {
-            // Put the String to pass back into an Intent and close this activity
-            val intent = Intent()
-            val rootObject = JSONObject()
-            var type = if (mediaType.toString().equals("tvshow")) "series" else "movie"
-            rootObject.put("mediaId", mediaId.toString())
-            rootObject.put("time", (player?.getCurrentPosition()!! / 1000).toString())
-            rootObject.put("duration", (player?.duration!! / 1000).toString())
-            rootObject.put("userId", userId.toString())
-            rootObject.put("profileId", profileId.toString())
-            rootObject.put("lang", "ar")
-            rootObject.put("type", type.toString())
-
-            intent.putExtra("result_data", rootObject.toString())
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            super.onBackPressed()
         }
 
         if (intent.getStringExtra("mediaType").equals("tvshow")) {
@@ -156,6 +142,39 @@ class PlayerActivity : Activity() {
         player!!.prepare()
         player?.seekTo(playPosition!!)
         playerView?.setKeepScreenOn(true)
+
+        audioLinear?.setOnClickListener {
+            showAudioDialog(this)
+            var mappedTrackInfo: MappingTrackSelector.MappedTrackInfo =
+                Assertions.checkNotNull(trackSelector?.getCurrentMappedTrackInfo());
+            var parameters: DefaultTrackSelector.Parameters = trackSelector?.getParameters()!!
+            for (rendererIndex in 0 until mappedTrackInfo.getRendererCount()) {
+                var trackType: Int = mappedTrackInfo.getRendererType(rendererIndex)
+                var trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex)
+                var isRendererDisabled = parameters.getRendererDisabled(rendererIndex);
+                var selectionOverride =
+                    parameters.getSelectionOverride(rendererIndex, trackGroupArray)
+                for (groupIndex in 0 until trackGroupArray.length) {
+                    for (trackIndex in 0 until trackGroupArray.get(groupIndex).length) {
+                        var trackName = DefaultTrackNameProvider(getResources()).getTrackName(
+                            trackGroupArray.get(groupIndex).getFormat(trackIndex)
+                        )
+                        var isTrackSupported = mappedTrackInfo.getTrackSupport(
+                            rendererIndex,
+                            groupIndex,
+                            trackIndex
+                        ) == RendererCapabilities.FORMAT_HANDLED
+                        Log.d(
+                            TAG,
+                            "track item " + groupIndex + ": trackName: " + trackName + ", isTrackSupported: " + isTrackSupported
+                        )
+                    }
+                }
+            }
+        }
+        ccLienar?.setOnClickListener {
+            showSubtitleDialog(this)
+        }
 
     }
 
@@ -242,8 +261,8 @@ class PlayerActivity : Activity() {
             .build().create(ApiService::class.java)
 
         var fullUrl: String =
-            "media/updateCurrentTime?mediaId=" + mediaId + "&time=" + currentTime + "&duration=" + duration + "&userId=" + userId + "&profileId=" + profileId + "&lang=ar"
-        Log.d(TAG, "https://namaapi.com/api/v3/" + fullUrl)
+            "media/updateCurrentTime?mediaId=$mediaId&time=$currentTime&duration=$duration&userId=$userId&profileId=$profileId&lang=ar"
+        Log.d(TAG, "https://namaapi.com/api/v3/$fullUrl")
         val call = api.updateCurrentTime(fullUrl)
         val result = call.enqueue(object : Callback<MediaWatchingItem> {
             override fun onFailure(call: Call<MediaWatchingItem>, t: Throwable) {
@@ -283,7 +302,7 @@ class PlayerActivity : Activity() {
             .build().create(ApiService::class.java)
 
         var fullUrl: String =
-            "media/updateCurrentTime?mediaId=" + mediaId + "&time=" + currentTime + "&duration=" + duration + "&userId=" + userId + "&profileId=" + profileId + "&lang=ar"
+            "media/updateCurrentTime?mediaId=$mediaId&time=$currentTime&duration=$duration&userId=$userId&profileId=$profileId&lang=ar"
         Log.d(TAG, "https://namaapi.com/api/v3/" + fullUrl)
         val call = api.updateCurrentTime(fullUrl)
         val result = call.enqueue(object : Callback<MediaWatchingItem> {

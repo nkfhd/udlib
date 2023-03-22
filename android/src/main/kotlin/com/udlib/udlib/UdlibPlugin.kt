@@ -1,12 +1,11 @@
 package com.udlib.udlib
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.annotation.NonNull
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.startActivity
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -17,11 +16,11 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
 
-class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
-    PluginRegistry.ActivityResultListener {
+class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
     private lateinit var activity: Activity
+    private lateinit var globalResult: Result
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "udlib")
@@ -30,10 +29,9 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-        Log.d("UdlibPlugin", "onMethodCall: ${call.method}")
+        globalResult = result
         if (call.method == "play") {
             play(call, result)
-            result.success("Android ${android.os.Build.VERSION.RELEASE}")
         } else {
             result.notImplemented()
         }
@@ -57,8 +55,7 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         intent.putExtra("mediaType", mediaType)
         intent.putExtra("subtitles", subtitles)
 
-        if (mediaType.toString().toLowerCase().equals("tvshow")) {
-            Log.d("TVSHOW_HERE", "TVSHOW_HERE");
+        if (mediaType.toString().lowercase().equals("tvshow")) {
             var episode_position: String? = call.argument<String?>("episode_position").toString()
             var episodes: String? = call.argument("episodes")
             intent.putExtra("episode_position", episode_position)
@@ -66,7 +63,7 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         }
 
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
-        ActivityCompat.startActivityForResult(activity, intent, 833831, null)
+        activity.startActivityForResult(intent, 833831)
     }
 
 
@@ -75,31 +72,17 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        activity = binding.activity;
-
+        activity = binding.activity
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
-        TODO("Not yet implemented")
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        TODO("Not yet implemented")
+        activity = binding.activity
     }
 
     override fun onDetachedFromActivity() {
         TODO("Not yet implemented")
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        if (requestCode == 833831) {
-            if (resultCode == Activity.RESULT_OK) {
-                Log.d("UdlibPlugin", "onActivityResult")
-                // Get String data from Intent
-//                val returnString = data!!.getStringExtra("result_data")
-//                globalResult?.success(returnString);
-            }
-        }
-        return true
     }
 }
