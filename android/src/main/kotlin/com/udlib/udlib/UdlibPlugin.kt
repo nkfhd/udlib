@@ -16,7 +16,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
 
-class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegistry.ActivityResultListener {
+class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
     private lateinit var activity: Activity
@@ -65,7 +65,8 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
         }
 
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
-        activity.startActivityForResult(intent, 833831)
+        activity.startActivity(intent)
+        globalResult.success(null)
     }
 
     private fun playOffline(call: MethodCall, result: MethodChannel.Result) {
@@ -94,7 +95,7 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
         }
 
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
-        activity.startActivityForResult(intent, 833831)
+        activity.startActivity(intent)
         globalResult.success(null)
     }
 
@@ -116,17 +117,5 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
 
     override fun onDetachedFromActivity() {
         TODO("Not yet implemented")
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        if (requestCode == 833831) {
-            if (resultCode == Activity.RESULT_OK) {
-                Log.d("UdlibPlugin", "onActivityResult")
-                // Get String data from Intent
-//                val returnString = data!!.getStringExtra("result_data")
-                globalResult?.success(null);
-            }
-        }
-        return true
     }
 }
