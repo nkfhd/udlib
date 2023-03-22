@@ -66,7 +66,7 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
         activity.startActivity(intent)
-        globalResult.success(null)
+        globalResult.success(false)
     }
 
     private fun playOffline(call: MethodCall, result: MethodChannel.Result) {
@@ -96,7 +96,7 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
         activity.startActivity(intent)
-        globalResult.success(null)
+        globalResult.success(false)
     }
 
 
