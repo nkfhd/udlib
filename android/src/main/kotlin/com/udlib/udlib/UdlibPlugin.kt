@@ -120,12 +120,7 @@ class UdlibPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         if (requestCode == 833831) {
-            if (resultCode == Activity.RESULT_OK) {
-                Log.d("UdlibPlugin", "onActivityResult")
-                // Get String data from Intent
-//                val returnString = data!!.getStringExtra("result_data")
-                globalResult?.success(null);
-            }
+            globalResult.success(null);
         }
         return true
     }
