@@ -4,11 +4,17 @@
 
     <application>
         <activity
-            android:name=".PlayerActivity"
+            android:name=".OfflineVideo"
+            android:configChanges="orientation|screenSize"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+        <activity
+            android:name=".PlayerActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
     </application>
 
 </manifest>
